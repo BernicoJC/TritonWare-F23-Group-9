@@ -33,7 +33,10 @@ public class BoardGenerator : MonoBehaviour
         {
             for (int c = 0; c < game.Dimensions.x; c++)
             {
-                Gizmos.color = (Color.white * (r + c) / max).WithAlpha(1).linear;
+                var color = (Color.white * (r + c) / max).linear;
+                color.a = 1f;
+
+                Gizmos.color = color;
                 Gizmos.DrawCube(game.GetPiecePosition(c, r), game.PieceSize);
             }
         }

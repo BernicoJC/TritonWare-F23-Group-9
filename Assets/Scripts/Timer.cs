@@ -30,11 +30,6 @@ public class Timer : MonoBehaviour
         tmp = GetComponent<TextMeshPro>();
     }
 
-    private void Start()
-    {
-        IsDone = true;
-    }
-
     public void StartTimer() => StartTimer(Time.time);
 
     public void StartTimer(float time)

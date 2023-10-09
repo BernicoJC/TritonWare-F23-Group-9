@@ -67,6 +67,11 @@ public class TbGame : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        turnTimer.OnDone -= onTurnTimerDone;
+    }
+
     public Vector3 GetPiecePosition(int c, int r) => GetPiecePosition(new Vector2Int(c, r));
 
     public Vector3 GetPiecePosition(Vector2Int position)
@@ -175,5 +180,8 @@ public class TbGame : MonoBehaviour
         }
     }
 
-    private void onTurnTimerDone() => Turn++;
+    private void onTurnTimerDone()
+    {
+        Turn++;
+    }
 }
