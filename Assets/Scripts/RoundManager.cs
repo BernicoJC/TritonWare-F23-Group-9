@@ -67,6 +67,8 @@ public class RoundManager : MonoBehaviour
     {
         startPosition = overlayCanvas.transform.localPosition;
 
+        Debug.Log(rtGame.gameObject.name);
+
         currentGame = isStartingWithRt ? rtGame.gameObject : tbGame.gameObject;
         pausedGame = isStartingWithRt ? tbGame.gameObject : rtGame.gameObject;
 
@@ -144,9 +146,14 @@ public class RoundManager : MonoBehaviour
     private void enableHierarchy(GameObject gameObject)
     {
         foreach (var component in gameObject.GetComponentsInChildren<MonoBehaviour>())
+        {
+            if (component == null)
+                continue;
+            
             component.enabled = true;
+        }
 
-        foreach (var rb in gameObject.GetComponentsInChildren<Rigidbody2D>())
+        foreach (var rb in gameObject.GetComponentsInChildren<Rigidbody2D>())   
             rb.simulated = true;
     }
 
@@ -154,7 +161,7 @@ public class RoundManager : MonoBehaviour
     {
         foreach (var component in gameObject.GetComponentsInChildren<MonoBehaviour>())
         {
-            if (component is INeverDisabled or ILayoutElement)
+            if (component is null or INeverDisabled or ILayoutElement)
                 continue;
 
             component.enabled = false;
