@@ -14,7 +14,7 @@ TagManager:
   - UI
   - Ground
   - Player
-  - 
+  - Invisible
   - 
   - 
   - 
@@ -42,12 +42,30 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Pieces
+  - name: Background
+    uniqueID: 1849777537
+    locked: 0
+  - name: TbPieces
     uniqueID: 3853768653
     locked: 0
-  - name: Board
+  - name: TbBoard
     uniqueID: 1183274621
     locked: 0
-  - name: Overlay
+  - name: TbOverlay
     uniqueID: 10858261
+    locked: 0
+  - name: RtRoom
+    uniqueID: 1092307321
+    locked: 0
+  - name: RtPlayer
+    uniqueID: 3980390707
+    locked: 0
+  - name: RtProjectile
+    uniqueID: 1987821473
+    locked: 0
+  - name: Canvas
+    uniqueID: 2748089899
+    locked: 0
+  - name: Invisible
+    uniqueID: 4079313417
     locked: 0

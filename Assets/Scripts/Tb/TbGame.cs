@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(Timer), typeof(TbPrefabs))]
 public class TbGame : MonoBehaviour
 {
     [field: SerializeField]
@@ -10,13 +12,21 @@ public class TbGame : MonoBehaviour
     [field: SerializeField]
     public int WinLength { get; private set; } = 4;
 
-    public IReadOnlyList<IReadOnlyList<Piece>> Board => board;
-    private Piece[][] board;
+    [field: SerializeField]
+    public float TurnDuration { get; private set; } = 2.25f;
+
+    [SerializeField]
+    private Board board;
+
+    public IReadOnlyList<IReadOnlyList<Piece>> BoardState => boardState;
+    private Piece[][] boardState;
 
     public IReadOnlyList<int> ColumnTops => columnTops;
     private int[] columnTops;
 
-    public event Action OnTurnChange;
+    public event Action OnBeginTurn;
+    public event Action OnEndTurn;
+    public event Action<Player> OnWin;
 
     public int Turn
     {
@@ -26,59 +36,54 @@ public class TbGame : MonoBehaviour
         {
             if (turn == value)
                 return;
-
+            
+            OnEndTurn?.Invoke();
             turn = value;
-            OnTurnChange?.Invoke();
-            turnTimer.StartTimer();
+            turnTimer.StartTimer(TurnDuration);
+            OnBeginTurn?.Invoke();
         }
     }
     private int turn;
 
     public Player CurrentPlayer => (Player)(turn % (int)Player.Count);
-
-    public Vector3 LocalPieceSize => new Vector3(1f / Dimensions.x, 1f / Dimensions.y);
-    public Vector3 PieceSize => Vector3.Scale(LocalPieceSize, transform.localScale);
-
-    [SerializeField]
+    
     private Timer turnTimer;
     private TbPrefabs prefabs;
 
     private void Awake()
     {
-        prefabs = GetComponentInParent<TbPrefabs>();
+        turnTimer = GetComponent<Timer>();
+        prefabs = GetComponent<TbPrefabs>();
+
+        turnTimer.OnDone += EndTurn;
     }
 
     private void Start()
     {
-        Turn = 0;
-        turnTimer.OnDone += onTurnTimerDone;
-        turnTimer.StartTimer();
-
-        board = new Piece[Dimensions.x][];
+        boardState = new Piece[Dimensions.x][];
         columnTops = new int[Dimensions.x];
         for (int c = 0; c < Dimensions.x; c++)
         {
 
-            board[c] = new Piece[Dimensions.y];
+            boardState[c] = new Piece[Dimensions.y];
             for (int r = 0; r < Dimensions.y; r++)
-                board[c][r] = null;
+                boardState[c][r] = null;
 
             columnTops[c] = 0;
         }
+
+        turnTimer.StartTimer(TurnDuration);
+        OnBeginTurn?.Invoke();
     }
 
     private void OnDestroy()
     {
-        turnTimer.OnDone -= onTurnTimerDone;
+        turnTimer.OnDone -= EndTurn;
     }
 
-    public Vector3 GetPiecePosition(int c, int r) => GetPiecePosition(new Vector2Int(c, r));
-
-    public Vector3 GetPiecePosition(Vector2Int position)
+    public void EndTurn()
     {
-        var bottomLeft = (transform.localScale - PieceSize) / 2;
-        var offset = Vector3.Scale(PieceSize, new Vector3(position.x, position.y));
-        return transform.position - bottomLeft + offset;
+        Turn++;
     }
 
     public void Place(int column)
@@ -86,28 +91,24 @@ public class TbGame : MonoBehaviour
         if (columnTops[column] >= Dimensions.y)
             throw new ArgumentException($"Column {column} is full", nameof(column));
         
-        var piece = Instantiate(prefabs.Piece, transform);
-        piece.transform.localScale = LocalPieceSize;
-        piece.transform.position = GetPiecePosition(column, Dimensions.y);
-        piece.Player = CurrentPlayer;
+        var piece = board.Instantiate(prefabs.Piece, column, Dimensions.y);
+        piece.Owner.Set(CurrentPlayer);
 
         var position = new Vector2Int(column, columnTops[column]);
         Insert(piece, position);
-
-        Turn++;
     }
 
     public void Insert(Piece piece, int c, int r) => Insert(piece, new Vector2Int(c, r));
 
     public void Insert(Piece piece, Vector2Int position)
     {
-        while (position.y > 0 && board[position.x][position.y - 1] == null)
+        while (position.y > 0 && boardState[position.x][position.y - 1] == null)
             position.y--;
 
         piece.Position = position;
-        board[position.x][position.y] = piece;
+        boardState[position.x][position.y] = piece;
 
-        while (columnTops[position.x] < Dimensions.y && board[position.x][columnTops[position.x]] != null)
+        while (columnTops[position.x] < Dimensions.y && boardState[position.x][columnTops[position.x]] != null)
             columnTops[position.x]++;
 
         checkWin(position);
@@ -120,11 +121,9 @@ public class TbGame : MonoBehaviour
             return;
 
         foreach (var piece in pieces)
-        {
-            var wp = Instantiate(prefabs.WinningPiece, transform);
-            wp.transform.position = GetPiecePosition(piece.Position);
-            wp.transform.localScale = LocalPieceSize;
-        }
+            board.Instantiate(prefabs.WinningPiece, piece.Position);
+
+        OnWin?.Invoke(pieces.First().Owner);
     }
 
     private HashSet<Piece> getWinningPieces(Vector2Int position)
@@ -155,22 +154,22 @@ public class TbGame : MonoBehaviour
 
                 if (left > -WinLength && leftPos.x >= 0 && leftPos.y >= 0 && leftPos.x < Dimensions.x && leftPos.y < Dimensions.y)
                 {
-                    var piece = board[leftPos.x][leftPos.y];
+                    var piece = boardState[leftPos.x][leftPos.y];
                     if (piece != null)
                     {
                         pieces.Remove(piece);
-                        counts[(int)piece.Player]--;
+                        counts[(int)piece.Owner]--;
                     }
                 }
 
                 if (rightPos.x >= 0 && rightPos.y >= 0 && rightPos.x < Dimensions.x && rightPos.y < Dimensions.y)
                 {
-                    var piece = board[rightPos.x][rightPos.y];
+                    var piece = boardState[rightPos.x][rightPos.y];
                     if (piece != null)
                     {
                         pieces.Add(piece);
-                        counts[(int)piece.Player]++;
-                        if (counts[(int)piece.Player] >= WinLength)
+                        counts[(int)piece.Owner]++;
+                        if (counts[(int)piece.Owner] >= WinLength)
                             return pieces;
                     }
                 }
@@ -178,10 +177,5 @@ public class TbGame : MonoBehaviour
 
             return new HashSet<Piece>();
         }
-    }
-
-    private void onTurnTimerDone()
-    {
-        Turn++;
     }
 }
