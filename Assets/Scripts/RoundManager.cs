@@ -39,6 +39,9 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private PlayerColorList winTextColors;
 
+    [SerializeField]
+    private Color tieTextColor;
+
     private int tbRound => tbTurn / (int)Player.Count;
     private int tbTurn;
 
@@ -48,7 +51,7 @@ public class RoundManager : MonoBehaviour
     private bool isPaused;
     private float pauseTime = float.MinValue;
 
-    private Player winner;
+    private Player? winner;
     private float winTime = float.MinValue;
 
     private void Awake()
@@ -75,12 +78,12 @@ public class RoundManager : MonoBehaviour
         pauseOverlay.SetActive(true);
 
         isPaused = false;
-        winner = Player.None;
+        winner = null;
     }
 
     private void Update()
     {
-        if (winner != Player.None)
+        if (winner != null)
             DoWin();
         else if (isPaused)
             DoTransition();
@@ -205,8 +208,8 @@ public class RoundManager : MonoBehaviour
         string winnerStr = winner.ToString();
         string winnerCaps = char.ToUpper(winnerStr[0]) + winnerStr.Substring(1);
         winText.text = $"{winnerCaps} Victory";
-        winText.color = winTextColors[winner];
-        
+        winText.color = winner == Player.None ? tieTextColor : winTextColors[winner];
+
         winTime = Time.time;
     }
 }
