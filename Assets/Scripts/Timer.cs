@@ -5,48 +5,63 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     public event Action OnDone;
-
-    [field: SerializeField]
-    public float Duration { get; set; }
-
-    [field: SerializeField]
-    public Color StartColor { get; private set; }
-
-    [field: SerializeField]
-    public Color EndColor { get; private set; }
-
-    public float TimeElapsed => Time.time - TimeStart;
-
-    public float TimeLeft => TimeStart + Duration - Time.time;
-
-    public float TimeStart { get; private set; }
     
     public bool IsDone { get; private set; }
 
-    private TextMeshPro tmp;
+    public float TimeStart { get; private set; }
+
+    public float TimeEnd { get; private set; }
+
+    public float TimeElapsed => Time.time - TimeStart;
+
+    public float TimeLeft => TimeEnd - Time.time;
+
+    private float disabledTime = -1;
 
     private void Awake()
     {
-        tmp = GetComponent<TextMeshPro>();
+        IsDone = true;
     }
 
-    public void StartTimer() => StartTimer(Time.time);
-
-    public void StartTimer(float time)
+    public void StartTimer(float duration)
     {
         IsDone = false;
-        TimeStart = time;
+        TimeStart = Time.time;
+        TimeEnd = TimeStart + duration;
+    }
+
+    public void AddTimer(float duration)
+    {
+        TimeEnd += duration;
+    }
+
+    public void EndTimer()
+    {
+        IsDone = true;
+        OnDone?.Invoke();
     }
 
     private void Update()
     {
         if (!IsDone && TimeLeft <= 0)
-        {
-            IsDone = true;
-            OnDone?.Invoke();
-        }
+            EndTimer();
+    }
 
-        tmp.text = Mathf.Max(0, TimeLeft).ToString("0.000");
-        tmp.color = Color.Lerp(StartColor, EndColor, TimeElapsed / Duration);
+    private void OnEnable()
+    {
+        if (disabledTime < 0)
+            return;
+
+        float elapsed = disabledTime - TimeStart;
+        float duration = TimeEnd - TimeStart;
+        TimeStart = Time.time - elapsed;
+        TimeEnd = TimeStart + duration;
+
+        disabledTime = -1;
+    }
+
+    private void OnDisable()
+    {
+        disabledTime = Time.time;
     }
 }
