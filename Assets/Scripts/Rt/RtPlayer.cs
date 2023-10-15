@@ -7,7 +7,7 @@ public class RtPlayer : OwnedObject
     public float Speed { get; private set; } = 50f;
 
     [field: SerializeField]
-    public int MaxHealth { get; private set; } = 7;
+    public int MaxHealth { get; private set; } = 14;
 
     public int Health
     {
