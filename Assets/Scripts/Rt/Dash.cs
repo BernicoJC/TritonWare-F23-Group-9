@@ -8,7 +8,7 @@ public class Dash : OwnedObject
     public PlayerSpriteList dashSprites;
 
     [SerializeField]
-    private float dashVelocity = 20f;
+    private float dashForce = 1500f;
 
     [SerializeField]
     private float dashDuration = 0.25f;
@@ -16,7 +16,6 @@ public class Dash : OwnedObject
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private bool isDashing;
-    float dashDir;
 
     protected override void Awake()
 	{
@@ -32,20 +31,15 @@ public class Dash : OwnedObject
             StartCoroutine(DashAnimation());
     }
 
-    private void FixedUpdate()
-    {
-        if (isDashing)
-            rb.velocity = new Vector2(dashVelocity * dashDir, rb.velocity.y);
-    }
-
     private IEnumerator DashAnimation()
     {
         isDashing = true;
-
-        dashDir = transform.eulerAngles.y < 90 ? 1 : -1;
+        float dir = transform.eulerAngles.y < 90 ? 1 : -1;
 
         var originalSprite = spriteRenderer.sprite;
         spriteRenderer.sprite = dashSprites[Owner];
+        rb.AddForce(new Vector2(dir * dashForce, 0f));
+
         yield return new WaitForSeconds(dashDuration);
         spriteRenderer.sprite = originalSprite;
         
