@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController2D))]
@@ -8,6 +10,9 @@ public class RtPlayer : OwnedObject
 
     [field: SerializeField]
     public int MaxHealth { get; private set; } = 14;
+
+
+    private BoxCollider2D bc;
 
     public int Health
     {
@@ -35,11 +40,13 @@ public class RtPlayer : OwnedObject
         base.Awake();
         controller = GetComponent<CharacterController2D>();
         game = GetComponentInParent<RtGame>();
+        bc = GetComponent<BoxCollider2D>();
     }
 
     private void Start()
     {
         Health = MaxHealth;
+        
     }
 
     private void Update()
@@ -57,6 +64,10 @@ public class RtPlayer : OwnedObject
         controller.Move(moveX * Time.fixedDeltaTime, false, isJumping);
         isJumping = false;
     }
+
+
+
+
 
     public void Die()
     {
