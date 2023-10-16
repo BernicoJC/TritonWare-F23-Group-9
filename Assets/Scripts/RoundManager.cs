@@ -67,8 +67,6 @@ public class RoundManager : MonoBehaviour
     {
         startPosition = overlayCanvas.transform.localPosition;
 
-        Debug.Log(rtGame.gameObject.name);
-
         currentGame = isStartingWithRt ? rtGame.gameObject : tbGame.gameObject;
         pausedGame = isStartingWithRt ? tbGame.gameObject : rtGame.gameObject;
 

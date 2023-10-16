@@ -28,10 +28,7 @@ public class Board : MonoBehaviour
         for (int r = 0; r < game.Dimensions.y; r++)
         {
             for (int c = 0; c < game.Dimensions.x; c++)
-            {
-                var piece = Instantiate(prefabs.Board, c, r);
-                piece.transform.localScale = LocalPieceSize;
-            }
+                Instantiate(prefabs.Board, c, r);
         }
     }
 
@@ -41,7 +38,7 @@ public class Board : MonoBehaviour
     public T Instantiate<T>(T original, Vector2Int position) where T : MonoBehaviour
     {
         var obj = Instantiate(original, transform);
-        obj.transform.localScale = LocalPieceSize;
+        obj.transform.localScale = Vector3.Scale(obj.transform.localScale, LocalPieceSize);
         obj.transform.position = GetPiecePosition(position);
         return obj;
     }
@@ -52,7 +49,7 @@ public class Board : MonoBehaviour
     public GameObject Instantiate(GameObject original, Vector2Int position)
     {
         var obj = Instantiate(original, transform);
-        obj.transform.localScale = LocalPieceSize;
+        obj.transform.localScale = Vector3.Scale(obj.transform.localScale, LocalPieceSize);
         obj.transform.position = GetPiecePosition(position);
         return obj;
     }

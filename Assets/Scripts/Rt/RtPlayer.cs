@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Net.NetworkInformation;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController2D))]
@@ -10,9 +8,6 @@ public class RtPlayer : OwnedObject
 
     [field: SerializeField]
     public int MaxHealth { get; private set; } = 14;
-
-
-    private BoxCollider2D bc;
 
     public int Health
     {
@@ -32,6 +27,7 @@ public class RtPlayer : OwnedObject
 
     private float moveX;
     private bool isJumping;
+    private bool isDropping;
 
     private RtGame game;
 
@@ -40,7 +36,6 @@ public class RtPlayer : OwnedObject
         base.Awake();
         controller = GetComponent<CharacterController2D>();
         game = GetComponentInParent<RtGame>();
-        bc = GetComponent<BoxCollider2D>();
     }
 
     private void Start()
@@ -55,19 +50,25 @@ public class RtPlayer : OwnedObject
 
         moveX = Input.GetAxisRaw("AxisX" + suffix) * Speed;
 
-        if (Input.GetButtonDown("AxisY" + suffix) && Input.GetAxisRaw("AxisY" + suffix) > 0)
+        
+        if (Input.GetAxisRaw("AxisY" + suffix) < 0)
+        {
+            isDropping = true;
+            isJumping = false;
+        }
+        else if (Input.GetButtonDown("AxisY" + suffix) && Input.GetAxisRaw("AxisY" + suffix) > 0)
+        {
             isJumping = true;
+            isDropping = false;
+        }
     }
 
     private void FixedUpdate()
     {
-        controller.Move(moveX * Time.fixedDeltaTime, false, isJumping);
+        controller.Move(moveX * Time.fixedDeltaTime, isDropping, isJumping);
         isJumping = false;
+        isDropping = false;
     }
-
-
-
-
 
     public void Die()
     {

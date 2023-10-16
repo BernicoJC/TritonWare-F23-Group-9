@@ -12,7 +12,10 @@ public class TbController : MonoBehaviour
         {
             int clamped = Mathf.Clamp(value, 0, game.Dimensions.x - 1);
             column = clamped;
-            transform.position = board.GetPiecePosition(clamped, game.Dimensions.y);
+
+            var position = transform.position;
+            position.x = board.GetPiecePosition(clamped, game.Dimensions.y).x;
+            transform.position = position;
         }
     }
     private int column;
@@ -36,7 +39,6 @@ public class TbController : MonoBehaviour
 
     private void Start()
     {
-        transform.localScale = board.LocalPieceSize;
         spriteRenderer.sprite = game.CurrentPlayer.Select(sprites);
         Column = game.Dimensions.x / 2;
     }
