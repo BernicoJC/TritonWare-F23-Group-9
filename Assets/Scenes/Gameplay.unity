@@ -591,10 +591,6 @@ PrefabInstance:
       propertyPath: healthbar
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 6107611091763829033, guid: dad7a6f3efc27124980fa79a0d59e4b2, type: 3}
-      propertyPath: <MaxHealth>k__BackingField
-      value: 14
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6416614811838414161, guid: dad7a6f3efc27124980fa79a0d59e4b2, type: 3}
     m_RemovedGameObjects: []
