@@ -17,7 +17,7 @@ public class CharacterController2D : MonoBehaviour
 	private bool m_Grounded;													// Whether or not the player is grounded.
 	private Rigidbody2D m_Rigidbody2D;
 	private Collider2D m_Collider2D;
-	private Vector3 m_Velocity = Vector3.zero;
+	private Vector3 m_DampingVelocity = Vector3.zero;
 
 	private HashSet<Collider2D> m_TouchingColliders = new HashSet<Collider2D>();
 	private HashSet<Collider2D> m_IgnoreColliders = new HashSet<Collider2D>();
@@ -92,8 +92,9 @@ public class CharacterController2D : MonoBehaviour
 			{
 			// Move the character by finding the target velocity
 			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+
 			// And then smoothing it out and applying it to the character
-			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_DampingVelocity, m_MovementSmoothing);
 
 			if (move != 0)
 				transform.rotation = Quaternion.Euler(0, move > 0 ? 0 : 180, 0);
