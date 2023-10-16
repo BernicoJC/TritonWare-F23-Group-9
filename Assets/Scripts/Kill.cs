@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Kill : MonoBehaviour
+public class KillZone : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D hitInfo)
     {

@@ -1,61 +1,54 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Dash : MonoBehaviour
+[RequireComponent(typeof(CharacterController2D))]
+public class Dash : OwnedObject
 {
     [SerializeField]
-    public string suffix;
+    public PlayerSpriteList dashSprites;
 
     [SerializeField]
-    public Sprite newSprite;
+    private float dashVelocity = 20f;
 
     [SerializeField]
-    public Sprite oldSprite;
+    private float dashDuration = 0.25f;
 
-    [SerializeField]
-    private float DashForce = 1500f;
-
-    private SpriteRenderer spriteR;
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
     private bool isDashing;
-    private Rigidbody2D m_Rigidbody2D;
+    float dashDir;
 
-    private void Awake()
+    protected override void Awake()
 	{
-		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        base.Awake();
+		rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 	}
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        spriteR = gameObject.GetComponent<SpriteRenderer>();
-    }
-
-    // Update is called once per frame
     void Update()
     {
+        string suffix = ((Player)Owner).ToSuffix();
         if (Input.GetButtonDown("Dash" + suffix) && !isDashing)
-        {
             StartCoroutine(DashAnimation());
-        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDashing)
+            rb.velocity = new Vector2(dashVelocity * dashDir, rb.velocity.y);
     }
 
     private IEnumerator DashAnimation()
     {
         isDashing = true;
-        float dir = transform.eulerAngles.y < 90 ? 1 : -1;
 
-        changeSprite(newSprite);
-        m_Rigidbody2D.AddForce(new Vector2(dir * DashForce, 0f));
-        
-        yield return new WaitForSeconds(0.2f);
-        changeSprite(oldSprite);
+        dashDir = transform.eulerAngles.y < 90 ? 1 : -1;
+
+        var originalSprite = spriteRenderer.sprite;
+        spriteRenderer.sprite = dashSprites[Owner];
+        yield return new WaitForSeconds(dashDuration);
+        spriteRenderer.sprite = originalSprite;
         
         isDashing = false;
-    }
-
-    private void changeSprite(Sprite toSprite)
-    {
-        spriteR.sprite = toSprite;
     }
 }

@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3488992890953873978}
   - component: {fileID: 6107611091763829033}
   - component: {fileID: 9213055000595481268}
+  - component: {fileID: 686898728156948041}
   - component: {fileID: 9006509611306802514}
   - component: {fileID: 7155338627464407602}
   - component: {fileID: 5714915681175106849}
@@ -166,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Speed>k__BackingField: 50
-  <MaxHealth>k__BackingField: 7
+  <MaxHealth>k__BackingField: 14
 --- !u!114 &9213055000595481268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,6 +181,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 2064034039350254120}
+--- !u!114 &686898728156948041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901585176074205458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aaf15d494af86849b1e6c7419a8adde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashSprites:
+    Red: {fileID: 21300000, guid: f103f501d87ca3b48afc46c2eacf9d3a, type: 3}
+    Purple: {fileID: 21300000, guid: 7ddc5e3b2039a344cb121db303a50246, type: 3}
+  dashVelocity: 20
+  dashDuration: 0.1
 --- !u!114 &9006509611306802514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,13 +211,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_JumpForce: 900
-  m_MovementSmoothing: 0.05
+  m_MovementSmoothing: 0.1
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
     m_Bits: 64
   m_GroundCheck: {fileID: 5886361075580000294}
-  m_CeilingCheck: {fileID: 3770087147087381819}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
