@@ -60,7 +60,7 @@ public class CharacterController2D : MonoBehaviour
 					m_IgnoreColliders.Remove(collider);
 				}
 
-				if (collider.bounds.max.y > highestCollider.bounds.max.y)
+				if (collider.bounds.max.y > highestCollider.bounds.max.y && !m_IgnoreColliders.Contains(collider))
 					highestCollider = collider;
 			}
 
