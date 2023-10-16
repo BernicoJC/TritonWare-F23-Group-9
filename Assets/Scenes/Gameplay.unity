@@ -3965,7 +3965,7 @@ MonoBehaviour:
   pauseOverlay: {fileID: 1770045825}
   winOverlay: {fileID: 400419628}
   winText: {fileID: 761368364}
-  isStartingWithRt: 1
+  isStartingWithRt: 0
   <TbRounds>k__BackingField: 6
   slideDuration: 1.2
   winTextColors:

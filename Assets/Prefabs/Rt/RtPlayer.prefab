@@ -196,8 +196,8 @@ MonoBehaviour:
   dashSprites:
     Red: {fileID: 21300000, guid: f103f501d87ca3b48afc46c2eacf9d3a, type: 3}
     Purple: {fileID: 21300000, guid: 7ddc5e3b2039a344cb121db303a50246, type: 3}
-  dashVelocity: 20
-  dashDuration: 0.1
+  dashForce: 1500
+  dashDuration: 0.25
 --- !u!114 &9006509611306802514
 MonoBehaviour:
   m_ObjectHideFlags: 0
