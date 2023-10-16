@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Start Screen.unity
     guid: 2c4b2867e5b4b75479c2576d798da4d4
   - enabled: 1
-    path: Assets/Scenes/Button Check.unity
+    path: Assets/Scenes/ReadyCheck.unity
     guid: fd434c92aa1aee446b0ef1549e3f4eaa
   - enabled: 1
     path: Assets/Scenes/Gameplay.unity

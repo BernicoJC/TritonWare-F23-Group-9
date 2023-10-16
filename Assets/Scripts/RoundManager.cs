@@ -1,12 +1,13 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RoundManager : MonoBehaviour
 {
     [SerializeField]
     private TbGame tbGame;
-    
+
     [SerializeField]
     private RtGame rtGame;
 
@@ -24,6 +25,8 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI winText;
+
+
 
     [Header("Options")]
     [SerializeField]
@@ -98,6 +101,7 @@ public class RoundManager : MonoBehaviour
         float clamped = Mathf.Clamp01(elapsed);
         float fraction = 1 - Mathf.Pow(1 - clamped, 4);
         overlayCanvas.transform.localPosition = Vector3.Lerp(start, middle, fraction);
+
     }
 
     private void DoTransition()
@@ -147,11 +151,11 @@ public class RoundManager : MonoBehaviour
         {
             if (component == null)
                 continue;
-            
+
             component.enabled = true;
         }
 
-        foreach (var rb in gameObject.GetComponentsInChildren<Rigidbody2D>())   
+        foreach (var rb in gameObject.GetComponentsInChildren<Rigidbody2D>())
             rb.simulated = true;
     }
 
@@ -217,4 +221,6 @@ public class RoundManager : MonoBehaviour
 
         winTime = Time.time;
     }
+
+
 }

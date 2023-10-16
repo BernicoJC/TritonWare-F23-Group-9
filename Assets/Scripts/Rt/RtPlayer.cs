@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 [RequireComponent(typeof(CharacterController2D))]
 public class RtPlayer : OwnedObject
 {
@@ -8,6 +9,8 @@ public class RtPlayer : OwnedObject
 
     [field: SerializeField]
     public int MaxHealth { get; private set; } = 14;
+
+
 
     public int Health
     {
@@ -29,7 +32,10 @@ public class RtPlayer : OwnedObject
     private bool isJumping;
     private bool isDropping;
 
+
     private RtGame game;
+
+
 
     protected override void Awake()
     {
@@ -47,7 +53,6 @@ public class RtPlayer : OwnedObject
     private void Update()
     {
         string suffix = ((Player)Owner).ToSuffix();
-
         moveX = Input.GetAxisRaw("AxisX" + suffix) * Speed;
 
         
@@ -65,6 +70,7 @@ public class RtPlayer : OwnedObject
 
     private void FixedUpdate()
     {
+
         controller.Move(moveX * Time.fixedDeltaTime, isDropping, isJumping);
         isJumping = false;
         isDropping = false;
