@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 
@@ -10,7 +11,13 @@ public class RtPlayer : OwnedObject
     [field: SerializeField]
     public int MaxHealth { get; private set; } = 14;
 
+    public ParticleSystem landDustL;
+    public ParticleSystem landDustC;
+    public ParticleSystem landDustR;
 
+    private float playDuration = 5.0f;
+
+    
 
     public int Health
     {
@@ -74,6 +81,7 @@ public class RtPlayer : OwnedObject
         controller.Move(moveX * Time.fixedDeltaTime, isDropping, isJumping);
         isJumping = false;
         isDropping = false;
+
     }
 
     public void Die()
@@ -82,4 +90,30 @@ public class RtPlayer : OwnedObject
         game.KillPlayer(Owner);
         Destroy(gameObject);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+
+            StartCoroutine(PlayLandDust());
+        
+    }
+
+
+    IEnumerator PlayLandDust()
+    {
+      //  Instantiate(landDustL);
+    //    Instantiate(landDustC);
+    //    Instantiate(landDustR);
+        landDustL.Play();
+        landDustC.Play();
+        landDustR.Play();
+        yield return new WaitForSeconds(playDuration);
+       // Destroy(landDustL);
+       // Destroy(landDustC);
+      //  Destroy(landDustR);
+    }
+
+
+
 }

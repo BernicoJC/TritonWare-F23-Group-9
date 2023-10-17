@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Unity.VisualScripting;
 using System.Linq;
+using System.Collections;
 
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
 public class CharacterController2D : MonoBehaviour
@@ -11,9 +12,12 @@ public class CharacterController2D : MonoBehaviour
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
 	[SerializeField] private bool m_AirControl;									// Whether or not a player can steer while jumping;
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
-	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
+	[SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
 
-	const float k_GroundedRadius = 0.2f;										// Radius of the overlap circle to determine if grounded
+	
+
+	const float k_GroundedRadius = 0.2f;                                        // Radius of the overlap circle to determine if grounded
+
 	private bool m_Grounded;													// Whether or not the player is grounded.
 	private Rigidbody2D m_Rigidbody2D;
 	private Collider2D m_Collider2D;
@@ -26,7 +30,9 @@ public class CharacterController2D : MonoBehaviour
 	[Header("Events")] 
 	[Space]
 
-	public UnityEvent OnLandEvent;
+
+
+    public UnityEvent OnLandEvent;
 
 	private void Awake()
 	{
@@ -75,9 +81,11 @@ public class CharacterController2D : MonoBehaviour
 				if (colliders[i].gameObject != gameObject)
 				{
 					m_Grounded = true;
-					if (!wasGrounded)
+
+                    if (!wasGrounded)
 						OnLandEvent.Invoke();
-				}
+						
+                }
 			}
 		}
 
@@ -103,6 +111,7 @@ public class CharacterController2D : MonoBehaviour
 		// If the player should jump...
 		if (m_Grounded && jump)
 		{
+
 			// Add a vertical force to the player.
 			m_Grounded = false;
 			m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0f);
@@ -111,5 +120,13 @@ public class CharacterController2D : MonoBehaviour
 
 		if (m_Grounded && drop)
 			m_IsDropping = true;
+			
 	}
+
+
+
+    /*private void OnCollisionEnter2D(Collision2D collision)
+    {
+        StartCoroutine(PlayLandDust());
+    } */
 }
