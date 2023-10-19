@@ -4835,6 +4835,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab8e2b609b6e845869d399ae448fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  p1Health: {fileID: 1775802529}
+  p2Health: {fileID: 1508470323}
   tbGame: {fileID: 63090349}
   rtGame: {fileID: 785843282}
   mainCamera: {fileID: 519420031}

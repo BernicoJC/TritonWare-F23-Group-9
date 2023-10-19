@@ -30,7 +30,7 @@ public class ParticleController : MonoBehaviour
     private void Update()
     {
         counter += Time.deltaTime;
-        if(Mathf.Abs(playerRb.velocity.x) > occurAfterVelocity)
+        if(playerRb != null && Mathf.Abs(playerRb.velocity.x) > occurAfterVelocity)
         {
             if (counter > FormationPeriod)
             {

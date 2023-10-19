@@ -93,9 +93,12 @@ public class RtPlayer : OwnedObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+            if (collision.CompareTag("Platform") || collision.CompareTag("Ground")) 
+            {
+                StartCoroutine(PlayLandDust());
+            }
 
 
-            StartCoroutine(PlayLandDust());
         
     }
 

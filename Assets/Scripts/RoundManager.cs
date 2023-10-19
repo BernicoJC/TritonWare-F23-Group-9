@@ -6,6 +6,12 @@ using UnityEngine.UI;
 public class RoundManager : MonoBehaviour
 {
     [SerializeField]
+    public HealthBar p1Health;
+
+    [SerializeField]
+    public HealthBar p2Health;
+
+    [SerializeField]
     private TbGame tbGame;
 
     [SerializeField]
