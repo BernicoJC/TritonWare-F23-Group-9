@@ -29,10 +29,14 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private GameObject winOverlay;
 
+    //[SerializeField]
+    //private TextMeshProUGUI winText;
+
     [SerializeField]
-    private TextMeshProUGUI winText;
+    private GameObject RedWin;
 
-
+    [SerializeField]
+    private GameObject PurpleWin;
 
     [Header("Options")]
     [SerializeField]
@@ -214,16 +218,30 @@ public class RoundManager : MonoBehaviour
     private void onWin(Player winner)
     {
         this.winner = winner;
+
         disableHierarchy(pausedGame);
         disableHierarchy(currentGame);
 
         pauseOverlay.SetActive(false);
         winOverlay.SetActive(true);
 
+
         string winnerStr = winner.ToString();
         string winnerCaps = char.ToUpper(winnerStr[0]) + winnerStr.Substring(1);
-        winText.text = $"{winnerCaps} Victory";
-        winText.color = winner == Player.None ? tieTextColor : winTextColors[winner];
+
+        print(winnerCaps);
+        if (winnerCaps == "Red")
+        {
+            RedWin.SetActive(true);
+            PurpleWin.SetActive(false);
+        }
+        else if (winnerCaps == "Purple")
+        {
+            RedWin.SetActive(false);
+            PurpleWin.SetActive(true);
+        }
+        //winText.text = $"{winnerCaps} Victory";
+        //winText.color = winner == Player.None ? tieTextColor : winTextColors[winner];
 
         winTime = Time.time;
     }

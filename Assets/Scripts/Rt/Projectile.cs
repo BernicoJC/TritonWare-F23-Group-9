@@ -7,7 +7,8 @@ public class Projectile : OwnedObject
     public float Speed { get; private set; } = 20f;
 
     private Rigidbody2D rb;
-
+    Vector3 upRotation = new Vector3(0, 0, 45);
+    Vector3 downRotation = new Vector3(0, 0, -45);
     protected override void Awake()
     {
         base.Awake();
@@ -16,7 +17,22 @@ public class Projectile : OwnedObject
 
     private void Start()
     {
-        rb.velocity = transform.right * Speed;
+        if (Input.GetButtonDown("UpAttack" + ((Player)Owner).ToSuffix()))
+        {
+            //rb.velocity = new Vector2(10, 10);
+            rb.velocity = (transform.right + upRotation) * Speed;
+        }
+        if (Input.GetButtonDown("DownAttack" + ((Player)Owner).ToSuffix()))
+        {
+            //rb.velocity = new Vector2(10, 10);
+            rb.velocity = (transform.right + downRotation) * Speed;
+        }
+        if (Input.GetButtonDown("Attack" + ((Player)Owner).ToSuffix()))
+        {
+            rb.velocity = transform.right * Speed;
+            //print(rb.velocity);
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D hitInfo)
