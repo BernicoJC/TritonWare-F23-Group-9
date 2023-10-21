@@ -11,13 +11,14 @@ public class RtPlayer : OwnedObject
     [field: SerializeField]
     public int MaxHealth { get; private set; } = 14;
 
-    public ParticleSystem landDustL;
-    public ParticleSystem landDustC;
-    public ParticleSystem landDustR;
+    [SerializeField]
+    private ParticleSystem landParticlesL;
 
-    private float playDuration = 5.0f;
+    [SerializeField]
+    private ParticleSystem landParticlesC;
 
-    
+    [SerializeField]
+    private ParticleSystem landParticlesR;
 
     public int Health
     {
@@ -39,22 +40,26 @@ public class RtPlayer : OwnedObject
     private bool isJumping;
     private bool isDropping;
 
-
     private RtGame game;
-
-
 
     protected override void Awake()
     {
         base.Awake();
         controller = GetComponent<CharacterController2D>();
         game = GetComponentInParent<RtGame>();
+
+        controller.OnLandEvent.AddListener(playLandParticles);
     }
 
     private void Start()
     {
         Health = MaxHealth;
-        
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        controller.OnLandEvent.RemoveListener(playLandParticles);
     }
 
     private void Update()
@@ -91,32 +96,10 @@ public class RtPlayer : OwnedObject
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void playLandParticles()
     {
-            if (collision.CompareTag("Platform") || collision.CompareTag("Ground")) 
-            {
-                StartCoroutine(PlayLandDust());
-            }
-
-
-        
+        landParticlesL.Play();
+        landParticlesC.Play();
+        landParticlesR.Play();
     }
-
-
-    IEnumerator PlayLandDust()
-    {
-      //  Instantiate(landDustL);
-    //    Instantiate(landDustC);
-    //    Instantiate(landDustR);
-        landDustL.Play();
-        landDustC.Play();
-        landDustR.Play();
-        yield return new WaitForSeconds(playDuration);
-       // Destroy(landDustL);
-       // Destroy(landDustC);
-      //  Destroy(landDustR);
-    }
-
-
-
 }

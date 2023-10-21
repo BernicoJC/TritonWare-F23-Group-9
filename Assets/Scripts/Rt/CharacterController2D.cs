@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Unity.VisualScripting;
-using System.Linq;
-using System.Collections;
 
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
 public class CharacterController2D : MonoBehaviour
@@ -14,7 +12,7 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
 
-	
+	public bool IsGrounded => m_Grounded;
 
 	const float k_GroundedRadius = 0.2f;                                        // Radius of the overlap circle to determine if grounded
 
@@ -29,8 +27,6 @@ public class CharacterController2D : MonoBehaviour
 
 	[Header("Events")] 
 	[Space]
-
-
 
     public UnityEvent OnLandEvent;
 
@@ -122,11 +118,4 @@ public class CharacterController2D : MonoBehaviour
 			m_IsDropping = true;
 			
 	}
-
-
-
-    /*private void OnCollisionEnter2D(Collision2D collision)
-    {
-        StartCoroutine(PlayLandDust());
-    } */
 }
