@@ -9,6 +9,8 @@ public class Projectile : OwnedObject
     private Rigidbody2D rb;
     Vector3 upRotation = new Vector3(0, 0, 45);
     Vector3 downRotation = new Vector3(0, 0, -45);
+
+    public AudioSource hitSound;
     protected override void Awake()
     {
         base.Awake();
@@ -42,6 +44,7 @@ public class Projectile : OwnedObject
             return;
 
         player.Health--;
+        //hitSound.Play();
         Destroy(gameObject);
     }
 }

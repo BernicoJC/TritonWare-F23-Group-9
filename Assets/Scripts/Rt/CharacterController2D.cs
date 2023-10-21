@@ -24,8 +24,9 @@ public class CharacterController2D : MonoBehaviour
 	private HashSet<Collider2D> m_TouchingColliders = new HashSet<Collider2D>();
 	private HashSet<Collider2D> m_IgnoreColliders = new HashSet<Collider2D>();
 	private bool m_IsDropping;
+    public AudioSource jumpNoise;
 
-	[Header("Events")] 
+    [Header("Events")] 
 	[Space]
 
     public UnityEvent OnLandEvent;
@@ -112,6 +113,7 @@ public class CharacterController2D : MonoBehaviour
 			m_Grounded = false;
 			m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0f);
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+			jumpNoise.Play();
 		}
 
 		if (m_Grounded && drop)
