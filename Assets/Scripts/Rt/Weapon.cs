@@ -7,10 +7,12 @@ public class Weapon : OwnedObject
 
     private RtGame game;
     private RtPrefabs prefabs;
-    Quaternion upRotation = Quaternion.Euler(0,0,45);
-    Quaternion downRotation = Quaternion.Euler(0, 0, -45);
-    private float nextFire = 1.3f;
-    private float fireRate = 0.3f;
+
+    private float nextAttack;
+
+    [SerializeField]
+    private float attackCooldown = 0.3f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -20,26 +22,31 @@ public class Weapon : OwnedObject
 
     private void Update() 
     {
-        if (Input.GetButtonDown("Attack" + ((Player)Owner).ToSuffix()) && Time.time > nextFire)
-            Shoot();
-        if (Input.GetButtonDown("UpAttack" + ((Player)Owner).ToSuffix()) && Time.time > nextFire)
+        if (Time.time < nextAttack)
+            return;
+
+        if (Input.GetButtonDown("Attack" + ((Player)Owner).ToSuffix()))
         {
-            var projectile = Instantiate(prefabs.Projectile, firePoint.position, firePoint.rotation * upRotation, game.transform);
-            projectile.Owner.Set(Owner);
-            nextFire = Time.time + fireRate;
+            attack();
         }
-        if (Input.GetButtonDown("DownAttack" + ((Player)Owner).ToSuffix()) && Time.time > nextFire)
+        else if (Input.GetButtonDown("UpAttack" + ((Player)Owner).ToSuffix()))
         {
-            var projectile = Instantiate(prefabs.Projectile, firePoint.position, firePoint.rotation * downRotation, game.transform);
-            projectile.Owner.Set(Owner);
-            nextFire = Time.time + fireRate;
+            var projectile = attack();
+            projectile.transform.Rotate(0, 0, 45);
+        }
+        else if (Input.GetButtonDown("DownAttack" + ((Player)Owner).ToSuffix()))
+        {
+            var projectile = attack();
+            projectile.transform.Rotate(0, 0, -45);
         }
     }
 
-    private void Shoot()
+    private Projectile attack()
     {
         var projectile = Instantiate(prefabs.Projectile, firePoint.position, firePoint.rotation, game.transform);
         projectile.Owner.Set(Owner);
-        nextFire = Time.time + fireRate;
+        nextAttack = Time.time + attackCooldown;
+
+        return projectile;
     }
 }
