@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class RoundManager : MonoBehaviour
 {
@@ -25,6 +26,33 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField]
     private GameObject pauseOverlay;
+
+
+    [SerializeField]
+    public GameObject threetbOverlay;
+
+    [SerializeField]
+    public GameObject twotbOverlay;
+
+    [SerializeField]
+    public GameObject onetbOverlay;
+
+    [SerializeField]
+    public GameObject gotbOverlay;
+
+    
+    [SerializeField]
+    public GameObject threertOverlay;
+
+    [SerializeField]
+    public GameObject twortOverlay;
+
+    [SerializeField]
+    public GameObject onertOverlay;
+
+    [SerializeField]
+    public GameObject gortOverlay;
+
 
     [SerializeField]
     private GameObject winOverlay;
@@ -83,8 +111,21 @@ public class RoundManager : MonoBehaviour
         currentGame = isStartingWithRt ? rtGame.gameObject : tbGame.gameObject;
         pausedGame = isStartingWithRt ? tbGame.gameObject : rtGame.gameObject;
 
+        threertOverlay.SetActive(false);
+        twortOverlay.SetActive(false);
+        onertOverlay.SetActive(false);
+        gortOverlay.SetActive(false);
+
+        threetbOverlay.SetActive(false);
+        twotbOverlay.SetActive(false);
+        onetbOverlay.SetActive(false);
+        gotbOverlay.SetActive(false);
+
         mainCamera.transform.position = currentGame.transform.position + Vector3.Scale(mainCamera.transform.position, Vector3.forward);
-        enableHierarchy(currentGame);
+
+        StartCoroutine(goAnimation());
+
+        // enableHierarchy(currentGame);
         disableHierarchy(pausedGame);
 
         winOverlay.SetActive(false);
@@ -150,9 +191,36 @@ public class RoundManager : MonoBehaviour
         elapsed -= slideDuration;
         if (elapsed > 0)
         {
+            StartCoroutine(goAnimation());
             isPaused = false;
-            enableHierarchy(currentGame);
+            // enableHierarchy(currentGame);
         }
+    }
+
+    IEnumerator goAnimation()
+    {
+        disableHierarchy(currentGame);
+        threertOverlay.SetActive(true);
+        threetbOverlay.SetActive(true);
+        yield return new WaitForSeconds(1);
+        threertOverlay.SetActive(false);
+        threetbOverlay.SetActive(false);
+        twortOverlay.SetActive(true);
+        twotbOverlay.SetActive(true);
+        yield return new WaitForSeconds(1);
+        twortOverlay.SetActive(false);
+        twotbOverlay.SetActive(false);
+        onertOverlay.SetActive(true);
+        onetbOverlay.SetActive(true);
+        yield return new WaitForSeconds(1);
+        onertOverlay.SetActive(false);
+        onetbOverlay.SetActive(false);
+        gortOverlay.SetActive(true);
+        gotbOverlay.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        gortOverlay.SetActive(false);
+        gotbOverlay.SetActive(false);
+        enableHierarchy(currentGame);
     }
 
     private void enableHierarchy(GameObject gameObject)
