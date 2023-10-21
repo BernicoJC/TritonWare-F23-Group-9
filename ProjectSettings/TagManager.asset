@@ -18,9 +18,9 @@ TagManager:
   - Player
   - Invisible
   - Background
-  - 
-  - 
-  - 
+  - TbPowerup
+  - RtPowerup
+  - Piece
   - 
   - 
   - 

@@ -27,6 +27,9 @@ public class TbController : MonoBehaviour
     private TbGame game;
     private SpriteRenderer spriteRenderer;
 
+    [SerializeField]
+    private AudioSource placeSound;
+
     private void Awake()
     {
         board = GetComponentInParent<Board>();
@@ -50,7 +53,7 @@ public class TbController : MonoBehaviour
         if (Input.GetButtonDown("AxisX" + suffix))
             Column += Mathf.RoundToInt(Input.GetAxisRaw("AxisX" + suffix));
         
-        if (Input.GetButtonDown("Attack" + suffix) && game.ColumnTops[Column] < game.Dimensions.y)
+        if (Input.GetButtonDown("Place" + suffix) && game.ColumnTops[Column] < game.Dimensions.y)
             game.EndTurn();
     }
 
@@ -63,7 +66,10 @@ public class TbController : MonoBehaviour
     private void onEndTurn()
     {
         if (game.ColumnTops[Column] < game.Dimensions.y)
+        {
             game.Place(Column);
+            placeSound.Play();
+        }
     }
 
     private void OnDestroy()

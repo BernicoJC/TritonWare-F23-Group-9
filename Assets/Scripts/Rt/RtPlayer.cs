@@ -6,10 +6,10 @@ using UnityEngine;
 public class RtPlayer : OwnedObject
 {
     [field: SerializeField]
-    public float Speed { get; private set; } = 50f;
+    public float Speed { get; set; } = 50f;
 
     [field: SerializeField]
-    public int MaxHealth { get; private set; } = 14;
+    public int MaxHealth { get; set; } = 14;
 
     [SerializeField]
     private ParticleSystem landParticlesL;

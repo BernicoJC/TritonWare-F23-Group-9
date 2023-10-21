@@ -8,11 +8,11 @@ public class OwningPlayer : MonoBehaviour
 
     public event Action OnSet;
 
-    public static implicit operator Player(OwningPlayer op) => op.player;
+    public static implicit operator Player(OwningPlayer op) => op?.player ?? Player.None;
 
-    public static explicit operator int(OwningPlayer op) => (int)op.player;
+    public static explicit operator int(OwningPlayer op) => (int)(op?.player ?? Player.None);
 
-    public static bool operator ==(OwningPlayer left, OwningPlayer right) => left.player == right.player;
+    public static bool operator ==(OwningPlayer left, OwningPlayer right) => (Player)left== (Player)right;
 
     public static bool operator !=(OwningPlayer left, OwningPlayer right) => !(left == right);
 

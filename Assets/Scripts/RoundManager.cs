@@ -1,17 +1,10 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using System.Linq;
 
 public class RoundManager : MonoBehaviour
 {
-    [SerializeField]
-    public HealthBar p1Health;
-
-    [SerializeField]
-    public HealthBar p2Health;
-
     [SerializeField]
     private TbGame tbGame;
 
@@ -21,50 +14,21 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private Camera mainCamera;
 
+    [Header("Overlays")]
     [SerializeField]
     private Canvas overlayCanvas;
 
     [SerializeField]
     private GameObject pauseOverlay;
 
-
-    [SerializeField]
-    public GameObject threetbOverlay;
-
-    [SerializeField]
-    public GameObject twotbOverlay;
-
-    [SerializeField]
-    public GameObject onetbOverlay;
-
-    [SerializeField]
-    public GameObject gotbOverlay;
-
-    
-    [SerializeField]
-    public GameObject threertOverlay;
-
-    [SerializeField]
-    public GameObject twortOverlay;
-
-    [SerializeField]
-    public GameObject onertOverlay;
-
-    [SerializeField]
-    public GameObject gortOverlay;
-
-
     [SerializeField]
     private GameObject winOverlay;
 
-    //[SerializeField]
-    //private TextMeshProUGUI winText;
+    [SerializeField]
+    private PlayerObjectList winOverlays;
 
     [SerializeField]
-    private GameObject RedWin;
-
-    [SerializeField]
-    private GameObject PurpleWin;
+    private GameObject[] countdownObjects;
 
     [Header("Options")]
     [SerializeField]
@@ -76,12 +40,6 @@ public class RoundManager : MonoBehaviour
     [Header("Visuals")]
     [SerializeField]
     private float slideDuration = 1f;
-
-    [SerializeField]
-    private PlayerColorList winTextColors;
-
-    [SerializeField]
-    private Color tieTextColor;
 
     private int tbRound => tbTurn / (int)Player.Count;
     private int tbTurn;
@@ -98,7 +56,7 @@ public class RoundManager : MonoBehaviour
     private void Awake()
     {
         tbGame.OnEndTurn += onTbEndTurn;
-        rtGame.OnRoundChange += onRtRoundChange;
+        rtGame.OnRoundEnd += onRtRoundChange;
 
         tbGame.OnWin += onWin;
         rtGame.OnWin += onWin;
@@ -111,28 +69,18 @@ public class RoundManager : MonoBehaviour
         currentGame = isStartingWithRt ? rtGame.gameObject : tbGame.gameObject;
         pausedGame = isStartingWithRt ? tbGame.gameObject : rtGame.gameObject;
 
-        threertOverlay.SetActive(false);
-        twortOverlay.SetActive(false);
-        onertOverlay.SetActive(false);
-        gortOverlay.SetActive(false);
-
-        threetbOverlay.SetActive(false);
-        twotbOverlay.SetActive(false);
-        onetbOverlay.SetActive(false);
-        gotbOverlay.SetActive(false);
-
         mainCamera.transform.position = currentGame.transform.position + Vector3.Scale(mainCamera.transform.position, Vector3.forward);
 
-        StartCoroutine(goAnimation());
-
-        // enableHierarchy(currentGame);
-        disableHierarchy(pausedGame);
-
-        winOverlay.SetActive(false);
         pauseOverlay.SetActive(true);
+        winOverlay.SetActive(false);
+        foreach (var w in winOverlays)
+            w.SetActive(false);
 
         isPaused = false;
         winner = null;
+
+        disableHierarchy(pausedGame);
+        StartCoroutine(goAnimation());
     }
 
     private void Update()
@@ -191,35 +139,29 @@ public class RoundManager : MonoBehaviour
         elapsed -= slideDuration;
         if (elapsed > 0)
         {
-            StartCoroutine(goAnimation());
             isPaused = false;
-            // enableHierarchy(currentGame);
+            enableHierarchy(currentGame);
         }
     }
 
-    IEnumerator goAnimation()
+    private IEnumerator goAnimation()
     {
         disableHierarchy(currentGame);
-        threertOverlay.SetActive(true);
-        threetbOverlay.SetActive(true);
-        yield return new WaitForSeconds(1);
-        threertOverlay.SetActive(false);
-        threetbOverlay.SetActive(false);
-        twortOverlay.SetActive(true);
-        twotbOverlay.SetActive(true);
-        yield return new WaitForSeconds(1);
-        twortOverlay.SetActive(false);
-        twotbOverlay.SetActive(false);
-        onertOverlay.SetActive(true);
-        onetbOverlay.SetActive(true);
-        yield return new WaitForSeconds(1);
-        onertOverlay.SetActive(false);
-        onetbOverlay.SetActive(false);
-        gortOverlay.SetActive(true);
-        gotbOverlay.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        gortOverlay.SetActive(false);
-        gotbOverlay.SetActive(false);
+
+        foreach (var o in countdownObjects)
+            o.SetActive(false);
+        
+        for (int i = 0; i < countdownObjects.Length; i++)
+        {
+            countdownObjects[i].SetActive(true);
+
+            if (i > 0)
+                countdownObjects[i - 1].SetActive(false);
+
+            yield return new WaitForSeconds(1);
+        }
+
+        countdownObjects.Last().SetActive(false);
         enableHierarchy(currentGame);
     }
 
@@ -248,13 +190,18 @@ public class RoundManager : MonoBehaviour
         }
 
         foreach (var rb in gameObject.GetComponentsInChildren<Rigidbody2D>())
+        {
+            if (rb.isKinematic)
+                continue;
+
             rb.simulated = false;
+        }
     }
 
     private void OnDestroy()
     {
         tbGame.OnEndTurn -= onTbEndTurn;
-        rtGame.OnRoundChange -= onRtRoundChange;
+        rtGame.OnRoundEnd -= onRtRoundChange;
     }
 
     private void onTbEndTurn()
@@ -291,22 +238,8 @@ public class RoundManager : MonoBehaviour
         disableHierarchy(currentGame);
 
         pauseOverlay.SetActive(false);
+        winOverlays[winner].SetActive(true);
         winOverlay.SetActive(true);
-
-        string winnerStr = winner.ToString();
-        string winnerCaps = char.ToUpper(winnerStr[0]) + winnerStr.Substring(1);
-
-        if (winnerCaps == "Red")
-        {
-            RedWin.SetActive(true);
-            PurpleWin.SetActive(false);
-        }
-        else if (winnerCaps == "Purple")
-        {
-            RedWin.SetActive(false);
-            PurpleWin.SetActive(true);
-        }
-
         winTime = Time.time;
     }
 }
