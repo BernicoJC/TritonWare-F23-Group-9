@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ public class PlayerSpriteList : PlayerList<Sprite> { }
 
 [Serializable]
 public class PlayerColorList : PlayerList<Ref<Color>> { }
+
+[Serializable]
+public class PlayerObjectList : PlayerList<GameObject> { };
 
 [Serializable]
 public class PlayerList<T> : List<T>, ISerializationCallbackReceiver

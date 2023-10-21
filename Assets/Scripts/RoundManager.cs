@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System.Linq;
 
 public class RoundManager : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private Camera mainCamera;
 
+    [Header("Overlays")]
     [SerializeField]
     private Canvas overlayCanvas;
 
@@ -22,10 +25,10 @@ public class RoundManager : MonoBehaviour
     private GameObject winOverlay;
 
     [SerializeField]
-    private GameObject redWin;
+    private PlayerObjectList winOverlays;
 
     [SerializeField]
-    private GameObject purpleWin;
+    private GameObject[] countdownObjects;
 
     [Header("Options")]
     [SerializeField]
@@ -67,14 +70,17 @@ public class RoundManager : MonoBehaviour
         pausedGame = isStartingWithRt ? tbGame.gameObject : rtGame.gameObject;
 
         mainCamera.transform.position = currentGame.transform.position + Vector3.Scale(mainCamera.transform.position, Vector3.forward);
-        enableHierarchy(currentGame);
-        disableHierarchy(pausedGame);
 
-        winOverlay.SetActive(false);
         pauseOverlay.SetActive(true);
+        winOverlay.SetActive(false);
+        foreach (var w in winOverlays)
+            w.SetActive(false);
 
         isPaused = false;
         winner = null;
+
+        disableHierarchy(pausedGame);
+        StartCoroutine(goAnimation());
     }
 
     private void Update()
@@ -136,6 +142,27 @@ public class RoundManager : MonoBehaviour
             isPaused = false;
             enableHierarchy(currentGame);
         }
+    }
+
+    private IEnumerator goAnimation()
+    {
+        disableHierarchy(currentGame);
+
+        foreach (var o in countdownObjects)
+            o.SetActive(false);
+        
+        for (int i = 0; i < countdownObjects.Length; i++)
+        {
+            countdownObjects[i].SetActive(true);
+
+            if (i > 0)
+                countdownObjects[i - 1].SetActive(false);
+
+            yield return new WaitForSeconds(1);
+        }
+
+        countdownObjects.Last().SetActive(false);
+        enableHierarchy(currentGame);
     }
 
     private void enableHierarchy(GameObject gameObject)
@@ -211,22 +238,8 @@ public class RoundManager : MonoBehaviour
         disableHierarchy(currentGame);
 
         pauseOverlay.SetActive(false);
+        winOverlays[winner].SetActive(true);
         winOverlay.SetActive(true);
-
-        string winnerStr = winner.ToString();
-        string winnerCaps = char.ToUpper(winnerStr[0]) + winnerStr.Substring(1);
-
-        if (winnerCaps == "Red")
-        {
-            redWin.SetActive(true);
-            purpleWin.SetActive(false);
-        }
-        else if (winnerCaps == "Purple")
-        {
-            redWin.SetActive(false);
-            purpleWin.SetActive(true);
-        }
-
         winTime = Time.time;
     }
 }

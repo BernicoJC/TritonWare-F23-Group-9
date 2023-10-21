@@ -16,6 +16,7 @@ public class Dash : OwnedObject
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private bool isDashing;
+    public AudioSource dashNoise;
 
     [SerializeField]
     private ParticleSystem dashParticles;
@@ -32,11 +33,13 @@ public class Dash : OwnedObject
         string suffix = ((Player)Owner).ToSuffix();
         if (Input.GetButtonDown("Dash" + suffix) && !isDashing)
             StartCoroutine(DashAnimation());
+
     }
 
     private IEnumerator DashAnimation()
     {
         isDashing = true;
+        dashNoise.Play();
         float dir = transform.eulerAngles.y < 90 ? 1 : -1;
 
         var originalSprite = spriteRenderer.sprite;

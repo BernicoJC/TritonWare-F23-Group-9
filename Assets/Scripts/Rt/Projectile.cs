@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -14,15 +15,15 @@ public class Projectile : OwnedObject
     public int HomingStrength { get; set; } = 0;
 
     private Rigidbody2D rb;
-    Vector3 upRotation = new Vector3(0, 0, 45);
-    Vector3 downRotation = new Vector3(0, 0, -45);
-
     private RtPlayer target;
+
+    private AudioSource hitSound;
 
     protected override void Awake()
     {
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
+        hitSound = FindObjectsOfType<AudioSource>().First(a => a.name == "hitNoise");
     }
 
     private void Start()
@@ -36,8 +37,6 @@ public class Projectile : OwnedObject
 
         if (HomingStrength == 0)
             return;
-
-        
 
         var direction = (Vector2)(target.transform.position - transform.position);
         var angleDiff = Vector2.SignedAngle(rb.velocity, direction);
@@ -56,6 +55,7 @@ public class Projectile : OwnedObject
             return;
 
         player.Health -= Damage;
+        hitSound.Play();
         Destroy(gameObject);
     }
 }

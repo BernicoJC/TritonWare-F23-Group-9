@@ -20,6 +20,8 @@ public class RtPlayer : OwnedObject
     [SerializeField]
     private ParticleSystem landParticlesR;
 
+
+
     public int Health
     {
         get => health;
@@ -77,6 +79,7 @@ public class RtPlayer : OwnedObject
         {
             isJumping = true;
             isDropping = false;
+
         }
     }
 
