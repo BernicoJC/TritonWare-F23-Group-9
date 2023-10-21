@@ -17,7 +17,8 @@ public class Dash : OwnedObject
     private Rigidbody2D rb;
     private bool isDashing;
 
-    public ParticleSystem dashDust;
+    [SerializeField]
+    private ParticleSystem dashParticles;
 
     protected override void Awake()
 	{
@@ -41,17 +42,12 @@ public class Dash : OwnedObject
         var originalSprite = spriteRenderer.sprite;
         spriteRenderer.sprite = dashSprites[Owner];
         rb.AddForce(new Vector2(dir * dashForce, 0f));
-        StartCoroutine(CreateDashDust());
+
+        dashParticles.Play();
 
         yield return new WaitForSeconds(dashDuration);
         spriteRenderer.sprite = originalSprite;
         
         isDashing = false;
-    }
-
-    IEnumerator CreateDashDust()
-    {
-        dashDust.Play();
-        yield return new WaitForSeconds(dashDuration);
     }
 }

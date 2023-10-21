@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8668884243590659415}
   - component: {fileID: 6279170290418550642}
   m_Layer: 0
-  m_Name: LandingParticleP1C
+  m_Name: LandingParticleC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 324435157691637121}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.230999, y: 0.28603655, z: 4.6900334}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41,7 +41,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324435157691637121}
   serializedVersion: 8
-  lengthInSec: 0.5
+  lengthInSec: 0.125
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -169,7 +169,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.2
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4840,7 +4840,7 @@ GameObject:
   - component: {fileID: 41649611721321707}
   - component: {fileID: 9020115276272554062}
   m_Layer: 0
-  m_Name: LandingParticleP1L
+  m_Name: LandingParticleL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4855,7 +4855,7 @@ Transform:
   m_GameObject: {fileID: 2739684938573545070}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.230999, y: 0.3490365, z: 4.6900334}
+  m_LocalPosition: {x: -0.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4869,7 +4869,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2739684938573545070}
   serializedVersion: 8
-  lengthInSec: 0.5
+  lengthInSec: 0.125
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -4944,7 +4944,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.125
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4997,7 +4997,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.2
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5115,7 +5115,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 0.2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -9666,12 +9666,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5378596578681591248}
   m_Layer: 0
-  m_Name: landingParticles
+  m_Name: LandingParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5378596578681591248
 Transform:
   m_ObjectHideFlags: 0
@@ -9702,7 +9702,7 @@ GameObject:
   - component: {fileID: 2911715037833050143}
   - component: {fileID: 5116336906789426331}
   m_Layer: 0
-  m_Name: LandingParticleP1R
+  m_Name: LandingParticleR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9717,7 +9717,7 @@ Transform:
   m_GameObject: {fileID: 6652100233216382514}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.230999, y: 0.3490365, z: 4.6900334}
+  m_LocalPosition: {x: 0.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9731,7 +9731,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6652100233216382514}
   serializedVersion: 8
-  lengthInSec: 0.5
+  lengthInSec: 0.125
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -9806,7 +9806,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.125
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -9859,7 +9859,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.2
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -9977,7 +9977,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 0.2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
