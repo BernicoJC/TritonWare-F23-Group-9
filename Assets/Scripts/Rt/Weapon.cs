@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class Weapon : OwnedObject
 {
+    [field: SerializeField]
+    public int Damage { get; set; } = 1;
+
+    [field: SerializeField]
+    public int HomingStrength { get; set; } = 0;
+
     [SerializeField]
     private Transform firePoint;
 
@@ -48,8 +54,11 @@ public class Weapon : OwnedObject
     {
         var projectile = Instantiate(prefabs.Projectile, firePoint.position, firePoint.rotation, game.transform);
         projectile.Owner.Set(Owner);
-        nextAttack = Time.time + attackCooldown;
+        var component = projectile.GetComponent<Projectile>();
+        component.Damage = Damage;
+        component.HomingStrength = HomingStrength;
 
+        nextAttack = Time.time + attackCooldown;
         return projectile;
     }
 }

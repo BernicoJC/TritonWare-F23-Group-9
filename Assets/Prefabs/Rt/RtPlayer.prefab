@@ -185,8 +185,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56815c2c55c807d41b1df45a6e0f7d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Damage>k__BackingField: 1
+  <HomingStrength>k__BackingField: 0
   firePoint: {fileID: 2064034039350254120}
-  attackCooldown: 0.2
+  attackCooldown: 0.3
   aimAngle: 45
 --- !u!114 &686898728156948041
 MonoBehaviour:

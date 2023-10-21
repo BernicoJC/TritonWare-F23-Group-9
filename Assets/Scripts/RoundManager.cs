@@ -1,16 +1,8 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RoundManager : MonoBehaviour
 {
-    [SerializeField]
-    public HealthBar p1Health;
-
-    [SerializeField]
-    public HealthBar p2Health;
-
     [SerializeField]
     private TbGame tbGame;
 
@@ -29,14 +21,11 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private GameObject winOverlay;
 
-    //[SerializeField]
-    //private TextMeshProUGUI winText;
+    [SerializeField]
+    private GameObject redWin;
 
     [SerializeField]
-    private GameObject RedWin;
-
-    [SerializeField]
-    private GameObject PurpleWin;
+    private GameObject purpleWin;
 
     [Header("Options")]
     [SerializeField]
@@ -48,12 +37,6 @@ public class RoundManager : MonoBehaviour
     [Header("Visuals")]
     [SerializeField]
     private float slideDuration = 1f;
-
-    [SerializeField]
-    private PlayerColorList winTextColors;
-
-    [SerializeField]
-    private Color tieTextColor;
 
     private int tbRound => tbTurn / (int)Player.Count;
     private int tbTurn;
@@ -70,7 +53,7 @@ public class RoundManager : MonoBehaviour
     private void Awake()
     {
         tbGame.OnEndTurn += onTbEndTurn;
-        rtGame.OnRoundChange += onRtRoundChange;
+        rtGame.OnRoundEnd += onRtRoundChange;
 
         tbGame.OnWin += onWin;
         rtGame.OnWin += onWin;
@@ -180,13 +163,18 @@ public class RoundManager : MonoBehaviour
         }
 
         foreach (var rb in gameObject.GetComponentsInChildren<Rigidbody2D>())
+        {
+            if (rb.isKinematic)
+                continue;
+
             rb.simulated = false;
+        }
     }
 
     private void OnDestroy()
     {
         tbGame.OnEndTurn -= onTbEndTurn;
-        rtGame.OnRoundChange -= onRtRoundChange;
+        rtGame.OnRoundEnd -= onRtRoundChange;
     }
 
     private void onTbEndTurn()
@@ -230,13 +218,13 @@ public class RoundManager : MonoBehaviour
 
         if (winnerCaps == "Red")
         {
-            RedWin.SetActive(true);
-            PurpleWin.SetActive(false);
+            redWin.SetActive(true);
+            purpleWin.SetActive(false);
         }
         else if (winnerCaps == "Purple")
         {
-            RedWin.SetActive(false);
-            PurpleWin.SetActive(true);
+            redWin.SetActive(false);
+            purpleWin.SetActive(true);
         }
 
         winTime = Time.time;

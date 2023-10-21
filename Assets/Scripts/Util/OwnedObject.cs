@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(OwningPlayer))]
-public class OwnedObject : MonoBehaviour
+public abstract class OwnedObject : MonoBehaviour
 {
     public OwningPlayer Owner { get; private set; }
     
