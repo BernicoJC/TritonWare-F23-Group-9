@@ -186,6 +186,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 2064034039350254120}
+  attackCooldown: 0.2
+  aimAngle: 45
 --- !u!114 &686898728156948041
 MonoBehaviour:
   m_ObjectHideFlags: 0

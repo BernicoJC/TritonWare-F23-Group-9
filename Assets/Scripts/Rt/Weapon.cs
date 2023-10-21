@@ -13,6 +13,9 @@ public class Weapon : OwnedObject
     [SerializeField]
     private float attackCooldown = 0.3f;
 
+    [SerializeField]
+    private float aimAngle = 45f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -32,12 +35,12 @@ public class Weapon : OwnedObject
         else if (Input.GetButtonDown("UpAttack" + ((Player)Owner).ToSuffix()))
         {
             var projectile = attack();
-            projectile.transform.Rotate(0, 0, 45);
+            projectile.transform.Rotate(0, 0, aimAngle);
         }
         else if (Input.GetButtonDown("DownAttack" + ((Player)Owner).ToSuffix()))
         {
             var projectile = attack();
-            projectile.transform.Rotate(0, 0, -45);
+            projectile.transform.Rotate(0, 0, -aimAngle);
         }
     }
 

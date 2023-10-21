@@ -225,11 +225,9 @@ public class RoundManager : MonoBehaviour
         pauseOverlay.SetActive(false);
         winOverlay.SetActive(true);
 
-
         string winnerStr = winner.ToString();
         string winnerCaps = char.ToUpper(winnerStr[0]) + winnerStr.Substring(1);
 
-        print(winnerCaps);
         if (winnerCaps == "Red")
         {
             RedWin.SetActive(true);
@@ -240,11 +238,7 @@ public class RoundManager : MonoBehaviour
             RedWin.SetActive(false);
             PurpleWin.SetActive(true);
         }
-        //winText.text = $"{winnerCaps} Victory";
-        //winText.color = winner == Player.None ? tieTextColor : winTextColors[winner];
 
         winTime = Time.time;
     }
-
-
 }
