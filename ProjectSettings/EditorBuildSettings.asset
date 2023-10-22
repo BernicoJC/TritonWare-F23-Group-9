@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Alt_Gameplay.unity
     guid: c3d67c09035781940b1a1a88b0303cd0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Win Screen.unity
     guid: d23d7dc742049d74e9830059853016c9
   m_configObjects: {}

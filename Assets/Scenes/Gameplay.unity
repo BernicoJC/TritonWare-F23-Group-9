@@ -1439,6 +1439,7 @@ GameObject:
   m_Component:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
+  - component: {fileID: 519420033}
   - component: {fileID: 519420029}
   m_Layer: 0
   m_Name: Main Camera
@@ -1483,9 +1484,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
+    y: 0.00066138804
     width: 1
-    height: 1
+    height: 0.99867725
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -1529,6 +1530,21 @@ Transform:
   - {fileID: 85179969}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1819dfca7805ce949844206ada30ff3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _previewInEditMode: 1
+  _maskColor: {r: 0, g: 0, b: 0, a: 1}
+  _aspectRatio: 1.3333334
 --- !u!4 &525430137 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2783681637373186635, guid: dad7a6f3efc27124980fa79a0d59e4b2, type: 3}
