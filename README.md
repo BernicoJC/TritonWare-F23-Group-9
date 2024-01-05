@@ -18,6 +18,3 @@ In this mode you will be trying to connect four of your pieces before your oppon
 
 ## Controls
 ![control_screen](https://github.com/BernicoJC/TritonWare-F23-Group-9/assets/108056736/09616449-014d-4cf6-972b-cc0318071be0)
-
-## Credits
-
